@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Medical Reminder App</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f0f8ff; }
+    h2 { color: #2c3e50; }
+    input, button { margin: 5px; padding: 8px; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 5px 0; background: #e0f7fa; padding: 10px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h2>🩺 Medical Reminder App</h2>
+  <input type="text" id="medicine" placeholder="Medicine Name">
+  <input type="time" id="time">
+  <button onclick="addReminder()">Add Reminder</button>
+
+  <ul id="reminderList"></ul>
+
+  <script>
+    const reminders = [];
+
+    function addReminder() {
+      const med = document.getElementById('medicine').value;
+      const time = document.getElementById('time').value;
+      if (med && time) {
+        reminders.push({ med, time });
+        updateList();
+        document.getElementById('medicine').value = '';
+        document.getElementById('time').value = '';
+      }
+    }
+
+    function updateList() {
+      const list = document.getElementById('reminderList');
+      list.innerHTML = '';
+      reminders.forEach(r => {
+        const li = document.createElement('li');
+        li.textContent = `${r.med} at ${r.time}`;
+        list.appendChild(li);
+      });
+    }
+
+    setInterval(() => {
+      const now = new Date();
+      const currentTime = now.toTimeString().slice(0,5);
+      reminders.forEach(r => {
+        if (r.time === currentTime) {
+          alert(`⏰ Time to take: ${r.med}`);
+        }
+      });
+    }, 60000); // check every minute
+  </script>
+</body>
+</html>
